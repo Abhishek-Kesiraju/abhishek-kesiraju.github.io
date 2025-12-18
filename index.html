@@ -1,444 +1,183 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhishek Kesiraju | Backend Engineer & Developer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Tech Journal</title>
 
-    <!-- Chosen Palette: Blood Red, Black, White Theme with Blue Accents for Specific Elements -->
-    <!-- Application Structure Plan: The application is designed as a single-page scrolling narrative inspired by comic book panels. The user journey starts with a high-impact, animated Hero section to establish the theme, moves to an "Origin Story" (About) presented in overlapping panels, showcases "Powers" (Skills) with a vibrant chart, displays "Case Files" (Projects) in an energetic grid, and ends with a clear call-to-action (Contact). This structure creates a dynamic, story-driven flow that is more engaging than a standard portfolio layout. -->
-    <!-- Visualization & Content Choices: Report Info: Developer's core skills. -> Goal: Inform and show the proportional distribution of expertise in a visually exciting way. -> Viz/Presentation Method: Interactive Doughnut Chart. -> Interaction: Hovering over a segment highlights it and reveals the skill name and proficiency percentage in a tooltip. -> Justification: A doughnut chart fits the pop-art, graphic style of the Spider-Verse theme perfectly. It's a great way to show part-to-whole relationships (how skills make up the whole developer) in a single, punchy visual. -> Library/Method: Chart.js (Canvas). -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+  <!-- Apple-style system font stack -->
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #666666;
+      --border: #e5e5e5;
+    }
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    * {
+      box-sizing: border-box;
+    }
 
-    <style>
-        body {
-            background-color: #FFFFFF; /* White as primary background */
-            font-family: 'Inter', sans-serif;
-            color: #000000; /* Black text by default */
-        }
-        .font-display { font-family: 'Bebas Neue', cursive; }
-        .text-outline {
-            -webkit-text-stroke: 2px #000000; /* Black outline for contrast on white text */
-            text-stroke: 2px #000000;
-        }
-        .halftone {
-            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px); /* Black dots on white */
-            background-size: 8px 8px;
-        }
-        .animated-pop-in {
-            animation: pop-in 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-        }
-        @keyframes pop-in {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .chart-container {
-            position: relative;
-            margin: auto;
-            height: 60vh;
-            max-height: 400px;
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        @media (min-width: 768px) {
-             .chart-container {
-                max-height: 450px;
-                max-width: 450px;
-            }
-        }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+    }
 
-        /* Flip Card Styles */
-        .flip-card {
-            background-color: transparent;
-            width: 180px;
-            height: 180px;
-            perspective: 1000px; /* 3D effect */
-            border-radius: 50%;
-            overflow: hidden;
-            position: relative;
-        }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border-radius: 50%;
-        }
+    /* Header */
+    header {
+      margin-bottom: 80px;
+    }
 
-        .flip-card.is-flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+    .profile {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
 
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* Safari */
-            backface-visibility: hidden;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .profile img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
-        .flip-card-back {
-            background-color: #000000; /* Black background for the back */
-            transform: rotateY(180deg);
-        }
-        .flip-card-back img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+    h1 {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
 
-        /* Gradient Text Styles */
-        .text-gradient-rb {
-            background: linear-gradient(to right, #FF0000, #00008B); /* Vibrant Red to Dark Blue */
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent; /* Fallback for non-webkit */
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-bg': '#FFFFFF', /* White */
-                        'secondary-bg-panel': '#000000', /* Black for panels */
-                        'accent-red': '#8B0000', /* Blood Red */
-                        'primary-text': '#000000', /* Black text on white background */
-                        'secondary-text': '#FFFFFF', /* White text on black panels */
-                        'accent-blue-dark': '#00008B', /* Dark Blue for gradients/charts */
-                        'accent-blue-vibrant': '#2196F3', /* Vibrant Blue for charts */
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
-                        'display': ['Bebas Neue', 'cursive'],
-                    },
-                },
-            }
-        }
-    </script>
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    /* Journal entries */
+    .entry {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .entry:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .entry h2 {
+      font-size: 22px;
+      font-weight: 500;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .date {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .entry p {
+      font-size: 17px;
+      margin: 0 0 16px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 120px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    footer a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 30px;
+      }
+
+      .entry h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased overflow-x-hidden">
-
-    <!-- Header & Navigation -->
-    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-3xl font-display text-gradient-rb">AK <i class="fas fa-spider text-xl ml-2"></i></a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="nav-link text-primary-text">Origin Story</a>
-                <a href="#skills" class="nav-link text-primary-text">Powers</a>
-                <a href="#projects" class="nav-link text-primary-text">Case Files</a>
-                <a href="#contact" class="px-5 py-2 bg-accent-red text-secondary-text font-bold rounded-sm hover:bg-accent-red/80 transition-colors">Contact</a>
-            </div>
-             <div class="md:hidden">
-                 <button id="menu-btn" class="text-primary-text text-2xl focus:outline-none">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
+<body>
+  <main class="container">
+    <header>
+      <div class="profile">
+        <!-- Replace profile.jpg with your photo -->
+        <img src="profile.jpg" alt="Your photo" />
+        <h1>Your Name</h1>
+        <p class="subtitle">
+          A quiet journal about technology, software engineering, and learning in public.
+        </p>
+      </div>
     </header>
 
-     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-secondary-bg-panel/95 backdrop-blur-sm">
-        <div class="flex flex-col items-center justify-center h-full space-y-8 font-display text-3xl">
-            <a href="#about" class="menu-link text-secondary-text">Origin Story</a>
-            <a href="#skills" class="menu-link text-secondary-text">Powers</a>
-            <a href="#projects" class="menu-link text-secondary-text">Case Files</a>
-            <a href="#contact" class="menu-link text-secondary-text">Contact</a>
-        </div>
-    </div>
+    <!-- Journal Entry -->
+    <section class="entry">
+      <h2>Why I’m Writing This Blog</h2>
+      <div class="date">March 2025</div>
+      <p>
+        I wanted a place that feels slower than social media. A space where I can
+        write honestly about my career, software engineering, learning curves, and the things
+        we don’t usually talk about in tech.
+      </p>
+      <p>
+        This blog is intentionally minimal — no ads, no noise, just thoughts over time.
+      </p>
+    </section>
 
-    <main id="main-content">
-        <!-- Hero Section -->
-        <section id="hero" class="h-screen min-h-[700px] flex items-center justify-center text-center overflow-hidden relative halftone bg-primary-bg">
-            <div class="relative z-10 px-4">
-                <div class="relative inline-block mb-8 animated-pop-in" style="animation-delay: 200ms;">
-                    <div id="avatar-flip-card" class="flip-card cursor-pointer">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <canvas id="avatar-canvas" width="180" height="180"></canvas>
-                            </div>
-                            <div class="flip-card-back">
-                                <img src="https://placehold.co/180x180/000000/FFFFFF?text=Your+Photo" alt="Your Profile Photo">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="text-7xl md:text-9xl font-display text-gradient-rb text-outline animated-pop-in" style="animation-delay: 400ms;">
-                    Abhishek Kesiraju
-                </h1>
-                <p id="hero-tagline" class="text-2xl md:text-3xl font-display text-primary-text max-w-2xl mx-auto mb-8 animated-pop-in" style="animation-delay: 600ms;">
-                    <!-- JS will populate this -->
-                </p>
-                <a href="#projects" class="inline-block px-8 py-3 bg-accent-red text-secondary-text font-bold rounded-sm hover:bg-accent-red/80 transition-colors duration-300 shadow-lg transform hover:scale-105 animated-pop-in" style="animation-delay: 800ms;">
-                    View My Work
-                </a>
-            </div>
-        </section>
+    <section class="entry">
+      <h2>The First Switch</h2>
+      <div class="date"> Ending notes - 2025</div>
+      <p>
+        After working for 3 years in a team, which lost its way over time. I feel at peace... Unsure how long it stays that way. But I am currently making sure that I take it slow and reset myself mentally & physically.
+        I dont like using the "T" word for a workplace or a team, but when it starts to take a toll on you for close to 2 years, it is time for a change.
+        It took me close to an year, to prepare for this internal lateral move. It is closely after the first 5 interviews, I started seeing the patterns and started realizing
+        "Interviewing is its own muscle". It needs to be trained. 
+        
+        It is a new domain, but in the same org. Some new rules, that I setup for myself after overworking into burnout for the last two years.
+        "Time & Health are the real currency". Irony, the domain which actually moves currency, started moving this real currency away from me.
+        But indeed, it paid me with experience, a beginner's comfort cushion, and OG mentors that I will forever remember and cherish. I will try my best to stay in touch with them.
+      </p>
+    </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 md:py-32 bg-secondary-bg-panel text-secondary-text">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                     <h2 class="text-5xl md:text-6xl font-display text-primary-text">Origin Story</h2>
-                     <p class="max-w-2xl mx-auto mt-2 text-lg">Every hero has a beginning. This is a look into my journey, the skills I've acquired, and the mission that drives me.</p>
-                </div>
-                <div class="grid lg:grid-cols-2 gap-8 lg:gap-0 items-center">
-                    <!-- Left Panel -->
-                    <div class="relative bg-secondary-bg-panel p-8 border-4 border-accent-red shadow-xl z-10 transform lg:-rotate-2">
-                        <h3 class="font-display text-4xl mb-4 text-accent-red">The Mission</h3>
-                        <p class="leading-relaxed">
-                            I'm a full-stack developer driven by a passion for creating intuitive and visually compelling digital experiences. I believe technology should not only be functional but also engaging and memorable. My mission is to bridge the gap between complex code and human-centric design, building applications that make a real impact.
-                        </p>
-                    </div>
-                    <!-- Right Panels -->
-                    <div class="relative space-y-8 transform lg:rotate-1 lg:-ml-12">
-                         <div class="bg-secondary-bg-panel text-secondary-text p-8 border-4 border-accent-red shadow-xl">
-                            <h3 class="font-display text-4xl mb-4 text-accent-red">Stats</h3>
-                            <div class="grid grid-cols-3 gap-4 text-center">
-                                <div>
-                                    <p class="font-display text-5xl stat-counter" data-target="5">0</p>
-                                    <p class="font-bold">Years Exp.</p>
-                                </div>
-                                <div>
-                                    <p class="font-display text-5xl stat-counter" data-target="32">0</p>
-                                    <p class="font-bold">Projects Done</p>
-                                </div>
-                                <div>
-                                    <p class="font-display text-5xl stat-counter" data-target="100">0</p>
-                                    <p class="font-bold">Commitment</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section class="entry">
+      <h2>First Month at CIAM</h2>
+      <div class="date"> December - 2025</div>
+      <p>
+        coming soon...
+      </p>
+    </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="py-20 md:py-32 halftone bg-primary-bg">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-5xl md:text-6xl font-display text-gradient-rb">Powers & Abilities</h2>
-                <p class="max-w-2xl mx-auto mt-2 mb-12 text-lg text-primary-text">A hero is only as good as his powers & tools. Here's a breakdown of my primary development skill set, honed through countless hours of building and learning.</p>
-                <div class="chart-container">
-                    <canvas id="skillsChart"></canvas>
-                </div>
-            </div>
-        </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 md:py-32 bg-secondary-bg-panel text-secondary-text">
-            <div class="container mx-auto px-6">
-                 <h2 class="text-5xl md:text-6xl font-display text-center mb-16 text-primary-text">Case Files</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-                    <!-- Project Cards -->
-                    <div class="project-card" style="--card-color: #8B0000;">
-                        <h3 class="font-display text-3xl">Alchemax Portal</h3>
-                        <p>Corporate intranet overhaul focusing on performance and modern UI/UX.</p>
-                        <div class="tech-stack"><span>React</span><span>Node.js</span><span>GraphQL</span></div>
-                    </div>
-                    <div class="project-card mt-0 lg:mt-12" style="--card-color: #8B0000;">
-                        <h3 class="font-display text-3xl">Web-Shooter IO</h3>
-                        <p>A real-time collaborative design tool built with WebSockets and Canvas API.</p>
-                        <div class="tech-stack"><span>Vue.js</span><span>Socket.IO</span><span>MongoDB</span></div>
-                    </div>
-                    <div class="project-card" style="--card-color: #8B0000;">
-                         <h3 class="font-display text-3xl">Daily Bugle CMS</h3>
-                        <p>Headless content management system to power a high-traffic news platform.</p>
-                        <div class="tech-stack"><span>Next.js</span><span>Strapi</span><span>PostgreSQL</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 md:py-32 text-center halftone bg-primary-bg">
-            <div class="container mx-auto px-6">
-                 <h2 class="text-5xl md:text-6xl font-display text-accent-red text-outline">Let's Team Up!</h2>
-                 <p class="max-w-xl mx-auto my-6 text-lg text-primary-text">
-                    Got an idea for the next big thing or a universe-ending bug? Send a signal. I'm ready for the next mission.
-                 </p>
-                 <a href="mailto:email@example.com" class="inline-block px-12 py-4 bg-secondary-bg-panel text-secondary-text border border-secondary-bg-panel text-xl rounded-sm hover:bg-accent-red hover:text-secondary-text transition-colors duration-300 transform hover:scale-105">
-                    Transmit Message
-                 </a>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Footer -->
-    <footer class="py-8 bg-secondary-bg-panel text-secondary-text">
-        <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center space-x-6 mb-4">
-                 <a href="#" class="hover:text-accent-red transition-colors text-xl"><i class="fab fa-github"></i></a>
-                 <a href="#" class="hover:text-accent-red transition-colors text-xl"><i class="fab fa-linkedin"></i></a>
-                 <a href="#" class="hover:text-accent-red transition-colors text-xl"><i class="fab fa-twitter"></i></a>
-            </div>
-            <p class="font-display text-lg">&copy; 2099 Miguel O'Hara. Into the Code-Verse.</p>
-        </div>
+    <footer>
+      <p>
+        © 2025 Abhishek Kesiraju · Hosted on GitHub Pages ·
+        <a href="https://github.com/yourusername">GitHub</a>
+      </p>
     </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- General Setup ---
-            const header = document.getElementById('header');
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            // --- Header Scroll Effect ---
-            window.addEventListener('scroll', () => {
-                header.classList.toggle('bg-secondary-bg-panel/90', window.scrollY > 50); /* Darker header on scroll */
-                header.classList.toggle('backdrop-blur-sm', window.scrollY > 50);
-            });
-            
-            // --- Mobile Menu Toggle ---
-            menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            mobileMenu.querySelectorAll('.menu-link').forEach(link => {
-                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-            });
-
-            // --- Nav Link Styling ---
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .nav-link { font-family: 'Bebas Neue', cursive; font-size: 1.25rem; color: #000000; transition: color 0.3s; } /* Black text on white header */
-                .nav-link:hover { color: #8B0000; } /* Blood Red on hover */
-                .project-card { 
-                    background-color: #000000; /* Black background for project cards */
-                    border: 4px solid #8B0000; /* Blood Red border */
-                    padding: 1.5rem; 
-                    box-shadow: 8px 8px 0px #8B0000; /* Blood Red shadow */
-                    transition: all 0.2s ease-in-out;
-                }
-                .project-card:hover {
-                    transform: translate(-4px, -4px);
-                    box-shadow: 12px 12px 0px var(--card-color, #8B0000);
-                }
-                .tech-stack span { background-color: #8B0000; color: #FFFFFF; padding: 0.25rem 0.75rem; font-size: 0.8rem; font-weight: bold; }
-                .menu-link { color: #FFFFFF; transition: color 0.3s; } /* White text for mobile menu on dark background */
-                .menu-link:hover { color: #8B0000; } /* Blood Red on hover */
-            `;
-            document.head.appendChild(style);
-
-            // --- Hero Tagline Animation ---
-            const taglineEl = document.getElementById('hero-tagline');
-            const taglines = ["Future-Driven Developer", "Cybernetic Architect", "Web-Slinger of 2099"];
-            let currentTagline = 0;
-            setInterval(() => {
-                taglineEl.classList.add('animated-pop-in');
-                taglineEl.textContent = taglines[currentTagline];
-                currentTagline = (currentTagline + 1) % taglines.length;
-                setTimeout(() => taglineEl.classList.remove('animated-pop-in'), 600);
-            }, 3000);
-            taglineEl.textContent = taglines[0];
-
-
-            // --- Avatar Canvas ---
-            const avatarCanvas = document.getElementById('avatar-canvas');
-            if(avatarCanvas) {
-                const actx = avatarCanvas.getContext('2d');
-                const w = avatarCanvas.width;
-                const h = avatarCanvas.height;
-                // Draw solid red background
-                actx.fillStyle = '#8B0000'; /* Blood Red background */
-                actx.fillRect(0, 0, w, h);
-                
-                actx.font = "bold 90px 'Bebas Neue'";
-                actx.fillStyle = '#000000'; /* Solid Black text */
-                actx.textAlign = 'center';
-                actx.textBaseline = 'middle';
-                // Draw text without any offsets or translucent effects
-                actx.fillText('AK', w / 2, h / 2);
-            }
-
-            // --- Stat Counter Animation ---
-            const counters = document.querySelectorAll('.stat-counter');
-            const speed = 200;
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const target = +entry.target.getAttribute('data-target');
-                        let count = 0;
-                        const inc = target / speed;
-                        const updateCount = () => {
-                            if (count < target) {
-                                count += inc;
-                                entry.target.innerText = Math.ceil(count);
-                                setTimeout(updateCount, 1);
-                            } else {
-                                entry.target.innerText = target;
-                            }
-                        };
-                        updateCount();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            counters.forEach(counter => observer.observe(counter));
-
-            // --- Skills Chart ---
-            const skillsCtx = document.getElementById('skillsChart');
-            if(skillsCtx) {
-                new Chart(skillsCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Cyber-Security', 'AI/ML Integration', 'Quantum Computing', 'Neural Networks', 'Bio-Engineering'],
-                        datasets: [{
-                            data: [30, 25, 20, 15, 10],
-                            backgroundColor: ['#00008B', '#8B0000', '#2196F3', '#000000', '#FFFFFF'], /* Dark Blue, Blood Red, Vibrant Blue, Black, White */
-                            borderColor: '#FFFFFF', /* White border for contrast on white background */
-                            borderWidth: 4,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '60%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    color: '#000000', /* Black text for legend on white background */
-                                    font: { family: 'Inter', weight: 'bold', size: 14 }
-                                }
-                            },
-                             tooltip: {
-                                titleFont: { family: 'Bebas Neue', size: 18, weight: 'normal' }, /* Set weight to normal */
-                                bodyFont: { family: 'Inter', size: 12, weight: 'normal' }, /* Set weight to normal */
-                                backgroundColor: '#000000', /* Black tooltip background */
-                                titleColor: '#FFFFFF', /* White title text */
-                                bodyColor: '#FFFFFF', /* White body text */
-                                padding: 10,
-                            }
-                        }
-                    }
-                });
-            }
-
-            // --- Flip Card Logic ---
-            const flipCard = document.getElementById('avatar-flip-card');
-            if (flipCard) {
-                flipCard.addEventListener('click', () => {
-                    flipCard.classList.toggle('is-flipped');
-                });
-            }
-        });
-    </script>
+  </main>
 </body>
 </html>
