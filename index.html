@@ -165,7 +165,7 @@
       <div class="date"> December - 2025</div>
         When I worked as a Programmer Analyst in IAM, before post-grad, I did not quite like the concept and motive of Identity and Access management. I was hesitant that CIAM was just another name for the same vertical. But they are two entirely different domains that probably share few security-related ideologies like  "CIA".<br><br>
         IAM - Identity and Access Management is focused on providing access to employee's of an org. Customer Identity and access Management deals with actual users of your software trying to make operations 
-        and you're verifying people are who they claim to be and they have the right kind of access to do so.<br>
+        and you're verifying people are who they claim to be and they have the right kind of access to do so.<br><br>
         I had an understanding of how OAuth works using JWT & PingFed at a high level for APIs to communicate with one another. But there seems to be a world of security stuff, which makes Authentication and Trust a platform of its own.
         Next things to learn so I can contribute well in this space are OAuth, OIDC, and SAML. Being able to integrate APIs with Okta, Auth0 etc
       </p>
@@ -173,16 +173,33 @@
 
     <section class="entry">
     <h2>Stick to the plan</h2>
-    <div class="date"> 4 Days to new year</div>
+    <div class="date">4 Days to new year</div>
       <p>
         As I prepare for Java 21 oracle certification, I seem to have a lot of thoughts overwhelming me...<br>
         There is so much to learn, and one step at a time feels extremely slow in a world where AI's are executing SWE tasks with a crazy level of accuracy.
-        I wanted to learn Kotlin, so I can be a mobile developer, but then there's a AI skills to learn...<br>
-        I was not ahead of the AI curve, and now Quantum computing started getting hype.
-        I am yet to complete a cloud certification, because there is need for proof being able to use cloud, docker and kubernetes. 
-        And then there's an endless list of side project folders, I never completed...
         <br><br>
-        I guess... that is just a forever weight on the shoulders of being a software engineer in 2025. However, one thing at a time.
+        I guess... I try not to be worried, but rather I want to leverage this trained intelligence as an assistant and a peer to make a better world.
+        A better product for an everyday dad who takes care of his family, and does not have time to wonder if his money goes missing. People who feel it is
+        very hard to use software rather than reaching a customer service representative for help.
+        <br><br>
+        I want to obsess over delivering an extremely safe and simple
+        customer experience and traverse back to engineering rather than being obsessed over a great SE that is highly payable in the market.
+      </p>
+    </section>
+    
+    <section class="entry">
+    <h2>Jan 3rd 2025</h2>
+    <div class="date"> Sessions </div>
+      <p>
+        A new range of complexity that feels very interesting when front-end gets involved and when your apps are customer-facing. "Sessions"
+        A huge appreciation to people who worked on frameworks themselves that simplify handling sessions.
+        <br><br>
+        An interesting defect that I got to deliver in Prod last night, was a single line code change. 
+        When user by mistake or purpose opens a second tab (2nd session) for doing an operation for the same app within a span of 30 mins...
+        The 2nd session or even the nth one ends with an abrupt "something went wrong". 
+        <br><br>
+        And what's happening there? The app was generating a second session also with the same session-id as first. It was using stale context data of the first
+        session rather than generating a new one, causing the app to end with an error. Solution was to clear any context before starting a new one. 
       </p>
     </section>
 
